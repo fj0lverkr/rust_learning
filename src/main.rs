@@ -1,44 +1,45 @@
-use std::io;
-use rand::Rng;
-use std::cmp::Ordering;
+mod game;
 
 fn main() {
-    //later we will put a menu to allow user to choose a game
-    game_guess();
+    games_menu();
 }
 
-fn game_guess(){
-    let secret_number = rand::thread_rng()
-        .gen_range(1, 101);
+fn games_menu(){
+    use terminal_menu::*;
 
-    let mut number_guesses = 0;
+    //create the menu
+    let menu = menu(vec![
+        label("\n"),
+        label("------------------------------"),
+        label("|         GAMES MENU         |"),
+        label("------------------------------"),
+        label("(Use arrow keys or wasd to select an option)"),
+        scroll("Select Game", vec!["Guessing Game", "Exit"]),
+        button("Confirm")
+    ]);
 
-    println!("Guessing game");
-    loop {
-        println!("Please input your guess:");
+    //open the menu
+    activate(&menu);
 
-        let mut guess = String::new();
-
-        io::stdin()
-            .read_line(&mut guess)
-            .expect("Failed to read line.");
-
-        let guess: u32 = match guess
-            .trim()
-            .parse(){
-                Ok(num) => num,
-                Err(_) => continue
-            };
-        
-        number_guesses += 1;
-
-        match guess.cmp(&secret_number){
-            Ordering::Less => println!("Your guess is too low!"),
-            Ordering::Equal => {
-                println!("You guessed correct in {} guesses.", number_guesses);
-                break;
-            }
-            Ordering::Greater => println!("Your guess is too big!")
-        }
+    //wait for the menu to exit
+    wait_for_exit(&menu);
+    
+    match selection_value(&menu, "Select Game").as_str(){
+        "Guessing Game" => run_game(String::from("guessing")),
+        _ => exit_games()
     }
+}
+
+fn run_game(game_type: String){
+    use game::*;
+    let curent_game = Game{game_type: game_type};
+    if curent_game.play(){
+        games_menu();
+    }
+}
+
+fn exit_games(){
+    use std::process::exit;
+    println!("\nExiting!\n");
+    exit(0);
 }

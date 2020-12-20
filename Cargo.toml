@@ -9,3 +9,4 @@ edition = "2018"
 [dependencies]
 ferris-says = "0.2"
 rand = "0.6.0"
+terminal-menu = "1.9.7"
