@@ -3,6 +3,11 @@ use rand::Rng;
 use std::cmp::Ordering;
 
 fn main() {
+    //later we will put a menu to allow user to choose a game
+    game_guess();
+}
+
+fn game_guess(){
     let secret_number = rand::thread_rng()
         .gen_range(1, 101);
 
