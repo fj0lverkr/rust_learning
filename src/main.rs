@@ -1,17 +1,3 @@
-/*
-use ferris_says::say; // from the previous step
-use std::io::{stdout, BufWriter};
-
-fn main() {
-    let stdout = stdout();
-    let message = String::from("Hello fellow Rustaceans!");
-    let width = message.chars().count();
-
-    let mut writer = BufWriter::new(stdout.lock());
-    say(message.as_bytes(), width, &mut writer).unwrap();
-}
-*/
-
 use std::io;
 use rand::Rng;
 use std::cmp::Ordering;
@@ -20,7 +6,7 @@ fn main() {
     let secret_number = rand::thread_rng()
         .gen_range(1, 101);
 
-    println!("Secret number is {}.", &secret_number);
+    let mut number_guesses = 0;
 
     println!("Guessing game");
     loop {
@@ -38,11 +24,13 @@ fn main() {
                 Ok(num) => num,
                 Err(_) => continue
             };
+        
+        number_guesses += 1;
 
         match guess.cmp(&secret_number){
             Ordering::Less => println!("Your guess is too low!"),
             Ordering::Equal => {
-                println!("Your guess is correct!");
+                println!("You guessed correct in {} guesses.", number_guesses);
                 break;
             }
             Ordering::Greater => println!("Your guess is too big!")
