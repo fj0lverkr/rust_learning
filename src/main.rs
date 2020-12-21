@@ -1,11 +1,14 @@
 mod game;
 
+use terminal_menu::*;
+use game::*;
+use std::process::exit;
+
 fn main() {
     games_menu();
 }
 
 fn games_menu(){
-    use terminal_menu::*;
 
     //create the menu
     let menu = menu(vec![
@@ -31,7 +34,6 @@ fn games_menu(){
 }
 
 fn run_game(game_type: String){
-    use game::*;
     let curent_game = Game{game_type: game_type};
     if curent_game.play(){
         games_menu();
@@ -39,7 +41,6 @@ fn run_game(game_type: String){
 }
 
 fn exit_games(){
-    use std::process::exit;
     println!("\nExiting!\n");
     exit(0);
 }

@@ -1,3 +1,8 @@
+use terminal_menu::*;
+use std::io;
+use rand::Rng;
+use std::cmp::Ordering;
+
 pub struct Game{
     pub game_type: String
 }
@@ -25,7 +30,6 @@ impl Play for Game{
 
 impl Replay for Game{
     fn replay(&self) -> bool{
-        use terminal_menu::*;
         let menu = menu(vec![
             label("\n"),
             label("------------------------------"),
@@ -51,10 +55,6 @@ impl Replay for Game{
 }
 
 fn run_guessing_game(){
-    use std::io;
-    use rand::Rng;
-    use std::cmp::Ordering;
-
     let secret_number = rand::thread_rng()
         .gen_range(1, 101);
 
